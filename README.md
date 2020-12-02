@@ -9,3 +9,8 @@ In this work, the problem of branch prediction is treated as a binary classifica
 
 ### Index terms: 
 Branch prediction, binary classification, Decision Tree, Random Forest, MLP
+
+
+
+
+![alt text](https://sun9-25.userapi.com/32DhCesFrrX-V8XzJdE_szMK0Sr4Aq16QsRVOw/0V-S9aCJBTs.jpg)
