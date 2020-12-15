@@ -31,6 +31,7 @@ using namespace std;
 // predictor tables
 int8_t   *gtable;
 uint32_t *indtable;
+queue<uint8_t> gaqueue;
 
 
 // two branch history registers:
@@ -48,6 +49,16 @@ uint32_t brh_retire;
 // count number of runs
 uint32_t runs;
 
+void printQueue(queue<uint8_t> q)
+{
+	//printing content of queue 
+	while (!q.empty()){
+		printf("%d",q.front());
+		printf(" ");
+		q.pop();
+	}
+	printf("\n");
+}
 
 void PredictorInit() {
     runs = 0;
@@ -69,8 +80,9 @@ void PredictorReset() {
         gtable[i] = 0;
     for (int i = 0; i < (1 << IND_SIZE); i ++)
         indtable[i] = 0;
-	
-    	
+	     	
+    for (int i=0;i<GA_SIZE;i++)
+	gaqueue.push(0);	
 
     brh_fetch = 0;
     brh_retire = 0;
@@ -86,16 +98,27 @@ void PredictorRunACycle() {
         const cbp3_uop_dynamic_t *uop = &fetch_entry(fe_ptr)->uop;
 
         if (runs == 0 && uop->type & IS_BR_CONDITIONAL) {
-            // get prediction
-	    
-
+            // get prediction	    
+			gaqueue.pop();
+			gaqueue.push(uop->pc & 0xFF);
             uint32_t gidx = (brh_fetch ^ uop->pc) & ((1 << GSHARE_SIZE) - 1);
             bool gpred = (gtable[gidx] >= 0);
 		
-           
+        printf("PC@%u", uop->pc);
+        printf("\n");
+        printf("GTABLE@");
+        for (int i = 0; i < (1 << GSHARE_SIZE); i++){
+			printf("%d",gtable[i]);
+			printf(" ");
+	    }
+	    printf("\n");
+	    printf("GA@");
+	    printQueue(gaqueue);
+	    printf("TARGET@%d",uop->br_taken);
+	    printf("\n");   
 	    
         
-            assert(report_pred(fe_ptr, false, gpred));
+        assert(report_pred(fe_ptr, false, gpred));
         }else if (runs == 1 && uop->type & IS_BR_INDIRECT) {
             uint32_t gidx = (brh_fetch ^ uop->pc) & ((1 << IND_SIZE) - 1);
             uint32_t gpred = indtable[gidx];
