@@ -11,6 +11,9 @@ In this work, the problem of branch prediction is treated as a binary classifica
 Branch prediction, binary classification, Decision Tree, Random Forest, MLP
 
 
+### Work can be found on https://docs.google.com/document/d/1VIH3Y10lPmNawKz7RS_vak2KJJaEGGTNwjf_Pz_M-EA/edit
+
+
 
 
 ![alt text](https://sun9-25.userapi.com/32DhCesFrrX-V8XzJdE_szMK0Sr4Aq16QsRVOw/0V-S9aCJBTs.jpg)
